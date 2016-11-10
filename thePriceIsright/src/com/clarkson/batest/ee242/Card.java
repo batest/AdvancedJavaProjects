@@ -1,7 +1,6 @@
 package com.clarkson.batest.ee242;
 
 import java.awt.Color;
-
 import javafx.scene.shape.*;
 /**
  * This is the generic class for all of our cards
