@@ -15,6 +15,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.geometry.Insets;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 
 
 /* TONY'S NOTES
@@ -93,7 +94,7 @@ public class thePriceIsRightGUI extends Application{
 		launch(args);
 	}
 
-	int numCards = 7;		//Placeholder variable for my testing.
+	int numCards = 3;		//Placeholder variable for my testing.
 
 	@Override
 	public void start(Stage primaryStage) {	// starts the "new game" window. this can be changed if necessary
@@ -102,7 +103,7 @@ public class thePriceIsRightGUI extends Application{
 			Scene newGame = new Scene(root);
 			Insets insets = new Insets(10,10,10,10);
 
-			Label welcome = new Label("Welcome to THE SHAPE IS RIGHT!!");
+			Label welcome = new Label("Welcome to THE SHAPE IS RIGHT!!\n   ");
 			Label ShapeMessage = new Label("Please Select how many shapes you would like to use:     ");
 
 			ChoiceBox<String> selectShapeNum = new ChoiceBox<String>(FXCollections.observableArrayList(
@@ -118,11 +119,11 @@ public class thePriceIsRightGUI extends Application{
 
 			Label whatShape = new Label("What Shapes Would You Like?");
 			ListView<String> shapePicker = new ListView<String> (FXCollections.observableArrayList(
-					"SHAPE ONE", "FOURTAGON", "CAR", "M16"));	//These should be changed once shapes are finalized.
+					"Rectangle", "Circle", "Triangle", "Diamond"));	//These should be changed once shapes are finalized.
 
 			Label whatColor = new Label("What Colors Would You Like?");
 			ListView<String> colorPicker = new ListView<String> (FXCollections.observableArrayList(
-					"CRIMSON", "JELLYFISH", "GUNMETAL", "pink"));	// these should also likely be changed.
+					"Blue", "Red", "Green", "Black"));	// these should also likely be changed.
 
 			colorPicker.setPrefWidth(150.0);
 			shapePicker.setPrefWidth(150.0);
@@ -169,8 +170,9 @@ public class thePriceIsRightGUI extends Application{
 			VBox organizer = new VBox();		// I'm not sure how to safely make a file in git, so this is best for now
 			Scene Game = new Scene(organizer);
 
-			Label title = new Label("          The Shapes Are Right!!!!\n Don't forget to get your pets spayed or neutered!!");
-
+			Label title = new Label("The Shapes Are Right!!!!\n Don't forget to get your pets spayed or neutered!!");
+			title.setTextAlignment(TextAlignment.CENTER);
+			
 			HBox cardArea = new HBox(10);
 
 			Rectangle[] Cards = new Rectangle[numCards];
