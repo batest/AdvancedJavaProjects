@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.geometry.Insets;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
@@ -120,10 +121,12 @@ public class thePriceIsRightGUI extends Application{
 			Label whatShape = new Label("What Shapes Would You Like?");
 			ListView<String> shapePicker = new ListView<String> (FXCollections.observableArrayList(
 					"Rectangle", "Circle", "Triangle", "Diamond"));	//These should be changed once shapes are finalized.
-
+			shapePicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			
 			Label whatColor = new Label("What Colors Would You Like?");
 			ListView<String> colorPicker = new ListView<String> (FXCollections.observableArrayList(
 					"Blue", "Red", "Green", "Black"));	// these should also likely be changed.
+			colorPicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 			colorPicker.setPrefWidth(150.0);
 			shapePicker.setPrefWidth(150.0);
@@ -143,7 +146,9 @@ public class thePriceIsRightGUI extends Application{
 			beginBTN.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					// needs to set framework values to selected values as well.
-
+					// generateHand(arrlist colors, arrlist shapes
+					
+					GameFunctionality.generateHand(colorPicker.getSelectionModel().getSelectedItem(), shapePicker.getSelectionModel().getSelectedItem());
 
 					gameWindow(primaryStage);	// switches to game
 
