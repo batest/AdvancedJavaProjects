@@ -123,10 +123,15 @@ public class thePriceIsRightGUI extends Application{
 					"Rectangle", "Circle", "Triangle", "Diamond"));	//These should be changed once shapes are finalized.
 			shapePicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			
+			//get selected
+			
+			
 			Label whatColor = new Label("What Colors Would You Like?");
 			ListView<String> colorPicker = new ListView<String> (FXCollections.observableArrayList(
 					"Blue", "Red", "Green", "Black"));	// these should also likely be changed.
 			colorPicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+			
+			//get selected
 
 			colorPicker.setPrefWidth(150.0);
 			shapePicker.setPrefWidth(150.0);
@@ -148,7 +153,7 @@ public class thePriceIsRightGUI extends Application{
 					// needs to set framework values to selected values as well.
 					// generateHand(arrlist colors, arrlist shapes
 					
-					GameFunctionality.generateHand(colorPicker.getSelectionModel().getSelectedItem(), shapePicker.getSelectionModel().getSelectedItem());
+		//			GameFunctionality.generateHand();
 
 					gameWindow(primaryStage);	// switches to game
 
