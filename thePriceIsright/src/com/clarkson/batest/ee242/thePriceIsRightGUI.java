@@ -144,6 +144,8 @@ public class thePriceIsRightGUI extends Application{
 	        		new ListChangeListener<String>() {
 						@Override
 						public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
+							
+							c.next();
 							if(c.wasAdded()){
 								
 								List<? extends String> added = c.getAddedSubList();
@@ -154,15 +156,12 @@ public class thePriceIsRightGUI extends Application{
 									} else if (added.get(i) == "Circle") {
 										chosenShapes.add(new Circle());
 										stringsShapes.add("Circle");
-									}	
-//									 else if (added.get(i) == "Triangle") {
-//										chosenShapes.add(Color.GREEN);
-//									} else if (added.get(i) == "Diamond") {
-//										chosenShapes.add(Color.BLACK);
-//									} else {
-										//bad things happened.
-									//	break;
-									//}
+									}else if (added.get(i) == "Triangle") {
+										 stringsShapes.add("Triangle");
+									} else if (added.get(i) == "Diamond") {
+										stringsShapes.add("Diamond");
+									}
+									
 								}
 																
 								
@@ -176,10 +175,10 @@ public class thePriceIsRightGUI extends Application{
 									} else if (removed.get(i) == "Circle") {
 										chosenShapes.remove(new Circle());
 										stringsShapes.remove("Circle");
-//									} else if (removed.get(i) == "Triangle") {
-//										chosenColors.remove(Color.GREEN);
-//									} else if (removed.get(i) == "Diamond") {
-//										chosenColors.remove(Color.BLACK);
+									} else if (removed.get(i) == "Triangle") {
+										stringsShapes.remove("Triangle");
+									} else if (removed.get(i) == "Diamond") {
+										stringsShapes.remove("Diamond");
 									} else {
 										//bad things happened.
 										break;
@@ -199,6 +198,7 @@ public class thePriceIsRightGUI extends Application{
 	        		new ListChangeListener<String>() {
 						@Override
 						public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
+							c.next();
 							if(c.wasAdded()){
 								
 								List<? extends String> added = c.getAddedSubList();
@@ -264,7 +264,7 @@ public class thePriceIsRightGUI extends Application{
 			beginBTN.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {					
 					
-					engine.generateHand(chosenColors, chosenShapes, numCards);
+//					engine.generateHand(chosenColors, chosenShapes, numCards);
 					
 					gameWindow(primaryStage);	// switches to game
 
