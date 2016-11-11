@@ -1,7 +1,15 @@
 package com.clarkson.batest.ee242;
 
+import java.awt.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -15,7 +23,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.geometry.Insets;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.TextAlignment;
 
 
@@ -90,12 +100,19 @@ FRAMEWORK IDEA, should it be necessary:
 */
 
 public class thePriceIsRightGUI extends Application{
-
+	
+	GameFunctionality engine = new GameFunctionality();
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	int numCards = 3;		//Placeholder variable for my testing.
+	
+	ArrayList<Color> chosenColors = new ArrayList<Color>();
+	ArrayList<Shape> chosenShapes = new ArrayList<Shape>();	
+	ArrayList<String> stringsColors = new ArrayList<String>();
+	ArrayList<String> stringsShapes = new ArrayList<String>();
 
 	@Override
 	public void start(Stage primaryStage) {	// starts the "new game" window. this can be changed if necessary
@@ -123,14 +140,110 @@ public class thePriceIsRightGUI extends Application{
 					"Rectangle", "Circle", "Triangle", "Diamond"));	//These should be changed once shapes are finalized.
 			shapePicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			
-			//get selected
-			
+	        shapePicker.getSelectionModel().getSelectedItems().addListener(
+	        		new ListChangeListener<String>() {
+						@Override
+						public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
+							if(c.wasAdded()){
+								
+								List<? extends String> added = c.getAddedSubList();
+								for (int i = 0; i<added.size(); i++) {
+									if(added.get(i) == "Rectangle") {
+										chosenShapes.add(new Rectangle());
+										stringsShapes.add("Rectangle");
+									} else if (added.get(i) == "Circle") {
+										chosenShapes.add(new Circle());
+										stringsShapes.add("Circle");
+									}	
+//									 else if (added.get(i) == "Triangle") {
+//										chosenShapes.add(Color.GREEN);
+//									} else if (added.get(i) == "Diamond") {
+//										chosenShapes.add(Color.BLACK);
+//									} else {
+										//bad things happened.
+									//	break;
+									//}
+								}
+																
+								
+							} if (c.wasRemoved()) {
+								
+								List<? extends String> removed = c.getRemoved();
+								for (int i = 0; i<removed.size(); i++) {
+									if(removed.get(i) == "Rectangle") {
+										chosenShapes.remove(new Rectangle());
+										stringsShapes.remove("Rectangle");
+									} else if (removed.get(i) == "Circle") {
+										chosenShapes.remove(new Circle());
+										stringsShapes.remove("Circle");
+//									} else if (removed.get(i) == "Triangle") {
+//										chosenColors.remove(Color.GREEN);
+//									} else if (removed.get(i) == "Diamond") {
+//										chosenColors.remove(Color.BLACK);
+									} else {
+										//bad things happened.
+										break;
+									}
+								}
+							}	
+						}
+	        	
+	        });
 			
 			Label whatColor = new Label("What Colors Would You Like?");
 			ListView<String> colorPicker = new ListView<String> (FXCollections.observableArrayList(
 					"Blue", "Red", "Green", "Black"));	// these should also likely be changed.
 			colorPicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			
+	        colorPicker.getSelectionModel().getSelectedItems().addListener(
+	        		new ListChangeListener<String>() {
+						@Override
+						public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
+							if(c.wasAdded()){
+								
+								List<? extends String> added = c.getAddedSubList();
+								for (int i = 0; i<added.size(); i++) {
+									if(added.get(i) == "Blue") {
+										chosenColors.add(Color.BLUE);
+										stringsColors.add("Blue");
+									} else if (added.get(i) == "Red") {
+										chosenColors.add(Color.RED);
+										stringsColors.add("Red");
+									} else if (added.get(i) == "Green") {
+										chosenColors.add(Color.GREEN);
+										stringsColors.add("Green");
+									} else if (added.get(i) == "Black") {
+										chosenColors.add(Color.BLACK);
+										stringsColors.add("Black");
+									} else {
+										//bad things happened.
+										break;
+									}
+								}
+																
+								
+							} if (c.wasRemoved()) {
+								
+								List<? extends String> removed = c.getRemoved();
+								for (int i = 0; i<removed.size(); i++) {
+									if(removed.get(i) == "Blue") {
+										chosenColors.remove(Color.BLUE);
+									} else if (removed.get(i) == "Red") {
+										chosenColors.remove(Color.RED);
+									} else if (removed.get(i) == "Green") {
+										chosenColors.remove(Color.GREEN);
+									} else if (removed.get(i) == "Black") {
+										chosenColors.remove(Color.BLACK);
+									} else {
+										//bad things happened.
+										break;
+									}
+								}
+							}	
+						}
+	        	
+	        });
+	              
 			//get selected
 
 			colorPicker.setPrefWidth(150.0);
@@ -149,12 +262,10 @@ public class thePriceIsRightGUI extends Application{
 
 			Button beginBTN = new Button("BEGIN!!!!!!");
 			beginBTN.setOnAction(new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent event) {
-					// needs to set framework values to selected values as well.
-					// generateHand(arrlist colors, arrlist shapes
+				public void handle(ActionEvent event) {					
 					
-		//			GameFunctionality.generateHand();
-
+					engine.generateHand(chosenColors, chosenShapes, numCards);
+					
 					gameWindow(primaryStage);	// switches to game
 
 				}
@@ -241,14 +352,16 @@ public class thePriceIsRightGUI extends Application{
 
 			RectangleCard actualCard = new RectangleCard();
 
-			ListView<String> CardColorGuess = new ListView<String> (FXCollections.observableArrayList(
-					"CRIMSON", "JELLYFISH", "GUNMETAL", "pink"));
+			ListView<String> CardColorGuess = new ListView<String> (
+					
+					FXCollections.observableArrayList(stringsColors));
 
 			CardColorGuess.setPrefHeight((24*4)+4);
 			CardColorGuess.setPrefWidth(125);
 
-			ListView<String> CardShapeGuess = new ListView<String> (FXCollections.observableArrayList(
-					"SHAPE ONE", "FOURTAGON", "CAR", "M16"));
+			ListView<String> CardShapeGuess = new ListView<String>(FXCollections.observableArrayList(stringsShapes));
+					//new ListView<String> (FXCollections.observableArrayList(
+					//"SHAPE ONE", "FOURTAGON", "CAR", "M16"));
 
 			CardShapeGuess.setPrefHeight((24*4)+4);
 			CardShapeGuess.setPrefWidth(125);
@@ -290,4 +403,5 @@ public class thePriceIsRightGUI extends Application{
 			e.printStackTrace();
 		}
 	}
+	
 }
