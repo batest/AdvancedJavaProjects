@@ -1,6 +1,6 @@
 package com.clarkson.batest.ee242;
 
-import java.awt.Color;
+//import java.awt.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +18,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -108,6 +112,9 @@ public class thePriceIsRightGUI extends Application{
 	}
 
 	int numCards = 3;		//Placeholder variable for my testing.
+	ArrayList<ImageView> cardBacks = new ArrayList<ImageView>();
+	ArrayList<Rectangle> cardFront = new ArrayList<Rectangle>();
+	ArrayList<StackPane> cards	   = new ArrayList<StackPane>();
 	
 	ArrayList<Color> chosenColors = new ArrayList<Color>();
 	ArrayList<Shape> chosenShapes = new ArrayList<Shape>();	
@@ -119,6 +126,9 @@ public class thePriceIsRightGUI extends Application{
 		try {
 			VBox root = new VBox();
 			Scene newGame = new Scene(root);
+			newGame.getStylesheets().add( 
+					getClass().getResource("application.css").toExternalForm() );
+			
 			Insets insets = new Insets(10,10,10,10);
 
 			Label welcome = new Label("Welcome to THE SHAPE IS RIGHT!!\n   ");
@@ -325,7 +335,28 @@ public class thePriceIsRightGUI extends Application{
 			Rectangle Card7 = new Rectangle();
 			Card7.setHeight(150.0);
 			Card7.setWidth(100.0);
-
+			
+//*******************************************************
+			//Troy's edits
+			
+			
+			for( int cardCount =0; cardCount < numCards; cardCount++){
+				cardFront.add(new Rectangle());
+				cardFront.get(cardCount).setHeight(150.0);
+				cardFront.get(cardCount).setWidth(100.0);
+				cardFront.get(cardCount).setFill(Color.WHITE);
+				cardBacks.add(new ImageView());
+				cardBacks.get(cardCount).setImage(new Image(getClass().getResource("cardBackImage.jpg").toExternalForm()));
+				
+				//add in card objects; square triangles ...
+				cards.add(new StackPane());			
+				cards.get(cardCount).getChildren().add(cardFront.get(cardCount));
+				cards.get(cardCount).getChildren().add(cardBacks.get(cardCount));
+			}
+			cardArea.getChildren().addAll(cards);
+//*******************************************************
+			
+			
 //			Cards[0] = Card1;
 //			Cards[1] = Card2;
 //			Cards[2] = Card3;
@@ -375,7 +406,10 @@ public class thePriceIsRightGUI extends Application{
 //			for (int i = 0; i<numCards; i++) {
 //				cardArea.getChildren().add(Cards[i]);
 //			}
-			cardArea.getChildren().addAll(Cards);
+		
+		//	cardArea.getChildren().addAll(Cards);
+
+
 
 			cardArea.setPadding(new Insets(10,10,10,10));
 			cardArea.setAlignment(Pos.CENTER);
