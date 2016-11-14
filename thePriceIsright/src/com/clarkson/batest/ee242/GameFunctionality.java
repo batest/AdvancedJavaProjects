@@ -23,7 +23,6 @@ public class GameFunctionality {
 		numberOfCards=cardCount;
 		//start new game
 	}
-	
 	void startGame(){
 		listOfColors.add(Color.BLUE);
 		listOfColors.add(Color.BLACK);
@@ -69,7 +68,6 @@ public class GameFunctionality {
 		}
 		return cardList;
 	}
-	
 	void flipCard( int index){
 		cardList.get(index).filpCard();
 	}

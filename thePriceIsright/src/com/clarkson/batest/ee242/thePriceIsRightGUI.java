@@ -121,6 +121,7 @@ public class thePriceIsRightGUI extends Application{
 	ArrayList<String> stringsColors = new ArrayList<String>();
 	ArrayList<String> stringsShapes = new ArrayList<String>();
 
+	int flipCounter=0;
 	@Override
 	public void start(Stage primaryStage) {	// starts the "new game" window. this can be changed if necessary
 		try {
@@ -275,7 +276,6 @@ public class thePriceIsRightGUI extends Application{
 				public void handle(ActionEvent event) {					
 					
 //					engine.generateHand(chosenColors, chosenShapes, numCards);
-					
 					gameWindow(primaryStage);	// switches to game
 
 				}
@@ -306,7 +306,7 @@ public class thePriceIsRightGUI extends Application{
 			
 			HBox cardArea = new HBox(10);
 
-			Rectangle[] Cards = new Rectangle[numCards];
+/*			Rectangle[] Cards = new Rectangle[numCards];
 
 			Rectangle Card1 = new Rectangle();
 			Card1.setHeight(150.0);
@@ -334,7 +334,7 @@ public class thePriceIsRightGUI extends Application{
 
 			Rectangle Card7 = new Rectangle();
 			Card7.setHeight(150.0);
-			Card7.setWidth(100.0);
+			Card7.setWidth(100.0);*/
 			
 //*******************************************************
 			//Troy's edits
@@ -361,7 +361,7 @@ public class thePriceIsRightGUI extends Application{
 //			Cards[1] = Card2;
 //			Cards[2] = Card3;
 
-			for(int i = 0; i < numCards; i++) {
+/*			for(int i = 0; i < numCards; i++) {
 				if(i==0) {
 					Cards[i]=Card1;
 				} else if(i==1) {
@@ -379,7 +379,7 @@ public class thePriceIsRightGUI extends Application{
 				} else {
 					break;
 				}
-			}
+			}*/
 
 			RectangleCard actualCard = new RectangleCard();
 
@@ -419,6 +419,21 @@ public class thePriceIsRightGUI extends Application{
 			Button flipNext = new Button("Flip Next Card!");
 			flipNext.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
+					if (flipCounter < numCards){
+						cardBacks.get(flipCounter).setVisible(false);				
+						flipCounter++;
+						if (flipCounter==numCards){
+							flipNext.setText("New Game?");
+						}
+					}
+					else{
+						//System.out.println("hey listen");
+						for(int tempCount=0; tempCount < numCards; tempCount++){
+							cardBacks.get(tempCount).setVisible(true);
+						}
+						flipCounter=0;
+						flipNext.setText("Flip Next Card!");
+					}
 					//with the array this will be able to change an index of the array, too
 
 				}
