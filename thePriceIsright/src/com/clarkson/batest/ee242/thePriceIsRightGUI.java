@@ -36,6 +36,13 @@ import javafx.scene.text.TextAlignment;
 
 */
 
+/*Troy's notes
+ * fix new hand hand functionality  
+ * create string based on what cards are available.
+ * 
+ * @author troy
+ *
+ */
 public class thePriceIsRightGUI extends Application{
 	
 	GameFunctionality engine = new GameFunctionality();
