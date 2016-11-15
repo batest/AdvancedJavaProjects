@@ -113,7 +113,8 @@ public class thePriceIsRightGUI extends Application{
 										chosenShapes.add(new Circle(25.0));
 										stringsShapes.add("Circle");
 									}else if (added.get(i) == "Triangle") {
-										 stringsShapes.add("Triangle");
+										chosenShapes.add(new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0)); 
+										stringsShapes.add("Triangle");
 									} else if (added.get(i) == "Diamond") {
 										Shape tempShape =new Rectangle(50.0, 50.0);
 										tempShape.setRotate(45.0);
@@ -348,14 +349,23 @@ public class thePriceIsRightGUI extends Application{
 		Shape tempShape;
 		Color tempColor;
 		for(int count = 0; count < numCards; count++){
-			int tempChoice = rand.nextInt(chosenColors.size());
-			tempColor = chosenColors.get(tempChoice);
-			tempChoice = rand.nextInt(chosenShapes.size());
+			int tempChoice = rand.nextInt(chosenShapes.size());
 			tempShape = chosenShapes.get(tempChoice);
-			tempShape.setFill(tempColor);
-			if(stringsShapes.contains("Diamond") && tempChoice == chosenShapes.size()){
+			if(stringsShapes.contains("Diamond") && tempChoice == chosenShapes.size()-1){
+				tempShape = new Rectangle(50.0, 50.0);
 				tempShape.setRotate(45.0);
 			}
+			else if(stringsShapes.contains("Rectangle") && tempChoice == 0){
+				tempShape = new Rectangle(50.0, 50.0);
+			}
+			else if (tempShape.equals(new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0))){
+				tempShape = new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0); 
+			}
+			else if( stringsShapes.get(tempChoice).equals("Circle")){
+				tempShape = new Circle(25.0);
+			}
+			tempChoice = rand.nextInt(chosenColors.size());
+			tempShape.setFill(chosenColors.get(tempChoice));
 			cardList.add(tempShape);
 		}
 		return cardList;
