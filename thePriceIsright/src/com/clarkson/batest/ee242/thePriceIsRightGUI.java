@@ -4,6 +4,7 @@ package com.clarkson.batest.ee242;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -27,9 +28,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Insets;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.scene.text.TextAlignment;
 
 
@@ -49,12 +48,13 @@ public class thePriceIsRightGUI extends Application{
 	ArrayList<ImageView> cardBacks = new ArrayList<ImageView>();
 	ArrayList<Rectangle> cardFront = new ArrayList<Rectangle>();
 	ArrayList<StackPane> cards	   = new ArrayList<StackPane>();
-	
+	ArrayList<Shape> cardShape	 	= new ArrayList<Shape>();
+	GameFunctionality gameFunction	= new GameFunctionality();
 	ArrayList<Color> chosenColors = new ArrayList<Color>();
 	ArrayList<Shape> chosenShapes = new ArrayList<Shape>();	
 	ArrayList<String> stringsColors = new ArrayList<String>();
 	ArrayList<String> stringsShapes = new ArrayList<String>();
-
+	protected static Random rand = new Random();
 	int numChoices[] = new int[]{3,5,7};
 	
 	int flipCounter=0;
@@ -107,14 +107,17 @@ public class thePriceIsRightGUI extends Application{
 								List<? extends String> added = c.getAddedSubList();
 								for (int i = 0; i<added.size(); i++) {
 									if(added.get(i) == "Rectangle") {
-										chosenShapes.add(new Rectangle());
+										chosenShapes.add(new Rectangle(50.0, 50.0));
 										stringsShapes.add("Rectangle");
 									} else if (added.get(i) == "Circle") {
-										chosenShapes.add(new Circle());
+										chosenShapes.add(new Circle(25.0));
 										stringsShapes.add("Circle");
 									}else if (added.get(i) == "Triangle") {
 										 stringsShapes.add("Triangle");
 									} else if (added.get(i) == "Diamond") {
+										Shape tempShape =new Rectangle(50.0, 50.0);
+										tempShape.setRotate(45.0);
+										chosenShapes.add(tempShape);
 										stringsShapes.add("Diamond");
 									}
 									
@@ -253,19 +256,20 @@ public class thePriceIsRightGUI extends Application{
 
 			//Troy's edits
 			
-			
+			cardShape=newHand();
 			for( int cardCount =0; cardCount < numCards; cardCount++){
-				cardFront.add(new Rectangle());
-				cardFront.get(cardCount).setHeight(150.0);	// needs to add randomization, but nice.
-				cardFront.get(cardCount).setWidth(100.0);
+				cardFront.add(new Rectangle(100.0,150.0));
 				cardFront.get(cardCount).setFill(Color.WHITE);
 				cardBacks.add(new ImageView());
 				cardBacks.get(cardCount).setImage(new Image(getClass().getResource("cardBackImage.jpg").toExternalForm()));
-				
+				//cardShape.get(cardCount).setRotate(45.0);	// needs to add randomization, but nice.
+				//cardShape.get(cardCount).setWidth(50.0);
 				//add in card objects; square triangles ...
 				cards.add(new StackPane());			
 				cards.get(cardCount).getChildren().add(cardFront.get(cardCount));
+				cards.get(cardCount).getChildren().add(cardShape.get(cardCount));
 				cards.get(cardCount).getChildren().add(cardBacks.get(cardCount));
+				
 			}
 			cardArea.getChildren().addAll(cards);
 //*******************************************************
@@ -300,16 +304,24 @@ public class thePriceIsRightGUI extends Application{
 					if (flipCounter < numCards){
 						cardBacks.get(flipCounter).setVisible(false);	// needs changed to cutesy animation				
 						flipCounter++;
+						
 						if (flipCounter==numCards){
 							flipNext.setText("New Game?");
 						}
 					}
 					else{
 						//System.out.println("hey listen");
+							flipCounter=0;
+						//cardShape.clear();
+						cardShape=newHand();
 						for(int tempCount=0; tempCount < numCards; tempCount++){
+							//cards.get(tempCount).getChildren().set(0, cardShape.get(tempCount));
 							cardBacks.get(tempCount).setVisible(true);
 						}
-						flipCounter=0;
+						
+					
+						
+						
 						flipNext.setText("Flip Next Card!");
 					}
 					//with the array this will be able to change an index of the array, too
@@ -329,6 +341,24 @@ public class thePriceIsRightGUI extends Application{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	ArrayList<Shape> newHand(){
+		ArrayList<Shape> cardList= new ArrayList<Shape>();
+		Shape tempShape;
+		Color tempColor;
+		for(int count = 0; count < numCards; count++){
+			int tempChoice = rand.nextInt(chosenColors.size());
+			tempColor = chosenColors.get(tempChoice);
+			tempChoice = rand.nextInt(chosenShapes.size());
+			tempShape = chosenShapes.get(tempChoice);
+			tempShape.setFill(tempColor);
+			if(stringsShapes.contains("Diamond") && tempChoice == chosenShapes.size()){
+				tempShape.setRotate(45.0);
+			}
+			cardList.add(tempShape);
+		}
+		return cardList;
 	}
 	
 }

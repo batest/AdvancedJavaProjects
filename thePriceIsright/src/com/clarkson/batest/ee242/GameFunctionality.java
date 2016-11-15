@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.shape.*;
-
-import java.awt.Color;
+import javafx.scene.paint.Color;
 
 public class GameFunctionality {
 	
 	private static int numberOfCards=0;
 	protected static Random rand = new Random();
-	public ArrayList<Card> cardList = new ArrayList<Card>();
+	public ArrayList<Shape> cardList = new ArrayList<Shape>();
 	private ArrayList<Color> listOfColors = new ArrayList<Color>();
 	private ArrayList<Shape> listOfShapes = new ArrayList<Shape>();
 	private ArrayList<Color> listOfUserColors = new ArrayList<Color>();
@@ -40,7 +39,7 @@ public class GameFunctionality {
 	 * @param userSelectedShapes
 	 * @param numberOfCards
 	 */
-	ArrayList<Card> generateHand(ArrayList<Color> userSelectedColor, ArrayList <Shape> userSelectedShapes, int usersNumberOfCards){
+	ArrayList<Shape> generateHand(ArrayList<Color> userSelectedColor, ArrayList <Shape> userSelectedShapes, int usersNumberOfCards){
 		cardList.clear();
 		numberOfCards=usersNumberOfCards;
 		listOfUserColors = userSelectedColor;
@@ -51,12 +50,14 @@ public class GameFunctionality {
 			int tempChoice = rand.nextInt(userSelectedColor.size());
 			tempColor = userSelectedColor.get(tempChoice);
 			tempChoice = rand.nextInt(userSelectedShapes.size());
+			userSelectedShapes.get(tempChoice).setFill(tempColor);
 			tempShape = userSelectedShapes.get(tempChoice);
-			cardList.add( new Card(false, tempColor, tempShape));
+			cardList.add(tempShape);
 		}
 		return cardList;
 	}
-	ArrayList<Card> newHand(){
+	ArrayList<Shape> newHand(){
+		cardList.clear();
 		Shape tempShape;
 		Color tempColor;
 		for(int count = 0; count < numberOfCards; count++){
@@ -64,11 +65,9 @@ public class GameFunctionality {
 			tempColor = listOfUserColors.get(tempChoice);
 			tempChoice = rand.nextInt(listOfUserShapes.size());
 			tempShape = listOfUserShapes.get(tempChoice);
-			cardList.add( new Card(false, tempColor, tempShape));
+			tempShape.setFill(tempColor);
+			cardList.add(tempShape);
 		}
 		return cardList;
-	}
-	void flipCard( int index){
-		cardList.get(index).filpCard();
 	}
 }
