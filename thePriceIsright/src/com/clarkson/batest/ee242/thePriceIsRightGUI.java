@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -52,7 +53,7 @@ public class thePriceIsRightGUI extends Application{
 		launch(args);
 	}
 
-	int numCards = 7;
+	int numCards = 5;
 	int Score = 0;
 	String cardsInHand = new String();
 	ArrayList<ImageView> cardBacks = new ArrayList<ImageView>();
@@ -65,7 +66,7 @@ public class thePriceIsRightGUI extends Application{
 	ArrayList<String> stringsColors = new ArrayList<String>();
 	ArrayList<String> stringsShapes = new ArrayList<String>();
 	protected static Random rand = new Random();
-	int numChoices[] = new int[]{3,5,7};
+	int numChoices[] = new int[]{3,5,7,9,11};
 	
 	int flipCounter=0;
 	@Override
@@ -83,7 +84,7 @@ public class thePriceIsRightGUI extends Application{
 
 			ChoiceBox<String> selectShapeNum = new ChoiceBox<String>(
 					FXCollections.observableArrayList(
-				   "3","5","7")
+				   "3","5","7", "9","11")
 			);
 			
 			selectShapeNum.getSelectionModel().selectedIndexProperty()
@@ -211,6 +212,14 @@ public class thePriceIsRightGUI extends Application{
 						}
 	        	
 	        });
+	        
+	        Button quitButton = new Button("Quit");
+	        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {		
+					
+					Platform.exit();
+				}
+			});
 
 			colorPicker.setPrefWidth(150.0);
 			shapePicker.setPrefWidth(150.0);
@@ -236,8 +245,12 @@ public class thePriceIsRightGUI extends Application{
 
 				}
 			});
+			
+			HBox buttons = new HBox(10);
+			buttons.getChildren().addAll(beginBTN, quitButton);
+			buttons.setAlignment(Pos.CENTER);
 
-			root.getChildren().addAll(welcome, numShapes,setup, beginBTN);
+			root.getChildren().addAll(welcome, numShapes,setup, buttons);
 			root.setAlignment(Pos.CENTER);
 			root.setPadding(insets);
 
@@ -341,8 +354,20 @@ public class thePriceIsRightGUI extends Application{
 
 				}
 			});
+			
+			 Button quitButton = new Button("Quit");
+		        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {		
+						
+						Platform.exit();
+					}
+				});
+		        
+		    HBox Buttons = new HBox(10);
+		    Buttons.getChildren().addAll(flipNext, quitButton);
+		    Buttons.setAlignment(Pos.CENTER);
 
-			organizer.getChildren().addAll(title, cardArea,guess, ControlArea, flipNext);
+			organizer.getChildren().addAll(title, cardArea,guess, ControlArea, Buttons);
 
 			organizer.getChildren().add(actualCard.returnShape());
 
@@ -370,17 +395,17 @@ public class thePriceIsRightGUI extends Application{
 			}
 			else if(stringsShapes.get(tempChoice).equals("Rectangle")){
 				tempShape = new Rectangle(50.0, 50.0);
-				tempShape.setRotate(90);
+				tempShape.setRotate(360.0);
 			
 			}
 			else if (stringsShapes.get(tempChoice).equals("Triangle")){
 				tempShape = new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0);
-				tempShape.setRotate(360);
+				tempShape.setRotate(720.0);
 				
 			}
 			else if( stringsShapes.get(tempChoice).equals("Circle")){
 				tempShape = new Circle(27.0);
-				tempShape.setRotate(42.0);	// makes it so i can tell what it is
+				tempShape.setRotate(1080.0);	// makes it so i can tell what it is
 				
 			} else {
 				tempShape = new QuadCurve();
@@ -414,11 +439,11 @@ public class thePriceIsRightGUI extends Application{
 			
 			if(current.getRotate() == 45.0) {	// diamond
 				currentString += " Diamond\n";
-			} else if ( current.getRotate() == 42.0){		
+			} else if ( current.getRotate() == 1080.0){		
 				currentString += "Circle\n";
-			} else if ( current.getRotate() == 90.0) {
-				currentString += "Rectangle\n";
 			} else if ( current.getRotate() == 360.0) {
+				currentString += "Rectangle\n";
+			} else if ( current.getRotate() == 720.0) {
 				currentString += "Triangle\n";
 			}
 			currentCards.add(currentString);
