@@ -347,18 +347,18 @@ public class thePriceIsRightGUI extends Application{
 	ArrayList<Shape> newHand(){
 		ArrayList<Shape> cardList= new ArrayList<Shape>();
 		Shape tempShape;
-		Color tempColor;
+	//	Color tempColor;
 		for(int count = 0; count < numCards; count++){
 			int tempChoice = rand.nextInt(chosenShapes.size());
 			tempShape = chosenShapes.get(tempChoice);
-			if(stringsShapes.contains("Diamond") && tempChoice == chosenShapes.size()-1){
+			if(stringsShapes.get(tempChoice).equals("Diamond")){
 				tempShape = new Rectangle(50.0, 50.0);
 				tempShape.setRotate(45.0);
 			}
-			else if(stringsShapes.contains("Rectangle") && tempChoice == 0){
+			else if(stringsShapes.get(tempChoice).equals("Rectangle")){
 				tempShape = new Rectangle(50.0, 50.0);
 			}
-			else if (tempShape.equals(new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0))){
+			else if (stringsShapes.get(tempChoice).equals("Triangle")){
 				tempShape = new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0); 
 			}
 			else if( stringsShapes.get(tempChoice).equals("Circle")){
