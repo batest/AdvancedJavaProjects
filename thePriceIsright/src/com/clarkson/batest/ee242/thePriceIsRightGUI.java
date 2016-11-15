@@ -5,6 +5,7 @@ package com.clarkson.batest.ee242;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -51,14 +52,16 @@ public class thePriceIsRightGUI extends Application{
 		launch(args);
 	}
 
-	int numCards = 7;		//Placeholder variable for my testing.
+	int numCards = 7;
+	int Score = 0;
+	String cardsInHand = new String();
 	ArrayList<ImageView> cardBacks = new ArrayList<ImageView>();
 	ArrayList<Rectangle> cardFront = new ArrayList<Rectangle>();
 	ArrayList<StackPane> cards	   = new ArrayList<StackPane>();
 	ArrayList<Shape> cardShape	 	= new ArrayList<Shape>();
 	GameFunctionality gameFunction	= new GameFunctionality();
 	ArrayList<Color> chosenColors = new ArrayList<Color>();
-	ArrayList<Shape> chosenShapes = new ArrayList<Shape>();	
+//	ArrayList<Shape> chosenShapes = new ArrayList<Shape>();	
 	ArrayList<String> stringsColors = new ArrayList<String>();
 	ArrayList<String> stringsShapes = new ArrayList<String>();
 	protected static Random rand = new Random();
@@ -114,18 +117,18 @@ public class thePriceIsRightGUI extends Application{
 								List<? extends String> added = c.getAddedSubList();
 								for (int i = 0; i<added.size(); i++) {
 									if(added.get(i) == "Rectangle") {
-										chosenShapes.add(new Rectangle(50.0, 50.0));
+//										chosenShapes.add(new Rectangle(50.0, 50.0));
 										stringsShapes.add("Rectangle");
 									} else if (added.get(i) == "Circle") {
-										chosenShapes.add(new Circle(25.0));
+//										chosenShapes.add(new Circle(25.0));
 										stringsShapes.add("Circle");
 									}else if (added.get(i) == "Triangle") {
-										chosenShapes.add(new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0)); 
+//										chosenShapes.add(new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0)); 
 										stringsShapes.add("Triangle");
 									} else if (added.get(i) == "Diamond") {
-										Shape tempShape =new Rectangle(50.0, 50.0);
-										tempShape.setRotate(45.0);
-										chosenShapes.add(tempShape);
+//										Shape tempShape =new Rectangle(50.0, 50.0);
+//										tempShape.setRotate(45.0);
+//										chosenShapes.add(tempShape);
 										stringsShapes.add("Diamond");
 									}
 									
@@ -137,10 +140,8 @@ public class thePriceIsRightGUI extends Application{
 								List<? extends String> removed = c.getRemoved();
 								for (int i = 0; i<removed.size(); i++) {
 									if(removed.get(i) == "Rectangle") {
-										chosenShapes.remove(new Rectangle());
 										stringsShapes.remove("Rectangle");
 									} else if (removed.get(i) == "Circle") {
-										chosenShapes.remove(new Circle());
 										stringsShapes.remove("Circle");
 									} else if (removed.get(i) == "Triangle") {
 										stringsShapes.remove("Triangle");
@@ -210,8 +211,6 @@ public class thePriceIsRightGUI extends Application{
 						}
 	        	
 	        });
-	              
-			//get selected
 
 			colorPicker.setPrefWidth(150.0);
 			shapePicker.setPrefWidth(150.0);
@@ -229,9 +228,10 @@ public class thePriceIsRightGUI extends Application{
 
 			Button beginBTN = new Button("BEGIN!!!!!!");
 			beginBTN.setOnAction(new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent event) {					
+				public void handle(ActionEvent event) {		
 					
-//					engine.generateHand(chosenColors, chosenShapes, numCards);
+					checkStringArrays();
+
 					gameWindow(primaryStage);	// switches to game
 
 				}
@@ -280,12 +280,10 @@ public class thePriceIsRightGUI extends Application{
 				
 			}
 			cardArea.getChildren().addAll(cards);
-//*******************************************************
 			
 			RectangleCard actualCard = new RectangleCard();
 
 			ListView<String> CardColorGuess = new ListView<String> (
-					
 					FXCollections.observableArrayList(stringsColors));
 
 			CardColorGuess.setPrefHeight((24*4)+4);
@@ -296,9 +294,15 @@ public class thePriceIsRightGUI extends Application{
 			CardShapeGuess.setPrefHeight((24*4)+4);
 			CardShapeGuess.setPrefWidth(125);
 
+			//score counter and current shapes			
+			Label currentShapes = new Label("Cards Dealt:\n" + cardsInHand);
+			currentShapes.setTextAlignment(TextAlignment.CENTER);
+			Label currentScore = new Label("Score: " + Score);
+
+			
 			HBox ControlArea = new HBox(10);
 			ControlArea.setPadding(new Insets(10,10,10,10));
-			ControlArea.getChildren().addAll(CardShapeGuess, CardColorGuess);
+			ControlArea.getChildren().addAll(currentScore,CardShapeGuess, CardColorGuess,currentShapes);
 			ControlArea.setAlignment(Pos.CENTER);
 
 			cardArea.setPadding(new Insets(10,10,10,10));
@@ -319,8 +323,9 @@ public class thePriceIsRightGUI extends Application{
 					}
 					else{
 						//System.out.println("hey listen");
+						
 							flipCounter=0;
-						//cardShape.clear();
+						
 						cardShape=newHand();
 						for(int tempCount=0; tempCount < numCards; tempCount++){
 							//cards.get(tempCount).getChildren().set(0, cardShape.get(tempCount));
@@ -356,26 +361,185 @@ public class thePriceIsRightGUI extends Application{
 		Shape tempShape;
 	//	Color tempColor;
 		for(int count = 0; count < numCards; count++){
-			int tempChoice = rand.nextInt(chosenShapes.size());
-			tempShape = chosenShapes.get(tempChoice);
+			int tempChoice = rand.nextInt(stringsShapes.size());
+	//		tempShape = chosenShapes.get(tempChoice);
 			if(stringsShapes.get(tempChoice).equals("Diamond")){
 				tempShape = new Rectangle(50.0, 50.0);
 				tempShape.setRotate(45.0);
+			
 			}
 			else if(stringsShapes.get(tempChoice).equals("Rectangle")){
 				tempShape = new Rectangle(50.0, 50.0);
+				tempShape.setRotate(90);
+			
 			}
 			else if (stringsShapes.get(tempChoice).equals("Triangle")){
-				tempShape = new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0); 
+				tempShape = new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0);
+				tempShape.setRotate(360);
+				
 			}
 			else if( stringsShapes.get(tempChoice).equals("Circle")){
-				tempShape = new Circle(25.0);
+				tempShape = new Circle(27.0);
+				tempShape.setRotate(42.0);	// makes it so i can tell what it is
+				
+			} else {
+				tempShape = new QuadCurve();
 			}
 			tempChoice = rand.nextInt(chosenColors.size());
 			tempShape.setFill(chosenColors.get(tempChoice));
 			cardList.add(tempShape);
 		}
+		
+		whatCards(cardList);
+		
 		return cardList;
 	}
+	
+	public void whatCards(ArrayList<Shape> hand) {
+		
+		Vector<String> currentCards = new Vector<String>();
+		
+		for(int i = 0; i <numCards; i++) {	//generates array of strings rep'ing the current hand.
+			Shape current = hand.get(i);
+			String currentString = new String();
+			if(current.getFill() == Color.BLACK) {
+				currentString = "Black ";
+			} else if (current.getFill() == Color.RED) {
+				currentString = "Red ";
+			} else if (current.getFill() == Color.BLUE) {
+				currentString = "Blue ";
+			} else if (current.getFill() == Color.GREEN) {
+				currentString = "Green ";
+			}
+			
+			if(current.getRotate() == 45.0) {	// diamond
+				currentString += " Diamond\n";
+			} else if ( current.getRotate() == 42.0){		
+				currentString += "Circle\n";
+			} else if ( current.getRotate() == 90.0) {
+				currentString += "Rectangle\n";
+			} else if ( current.getRotate() == 360.0) {
+				currentString += "Triangle\n";
+			}
+			currentCards.add(currentString);
+		}
+		for(int j = 0; j<numCards; j++ ) {	//generates String randomizing what cards are in the hand
+			int tempIndex = rand.nextInt(numCards-j);
+			cardsInHand += currentCards.remove(tempIndex);
+		}
+	}
+	
+	public void checkStringArrays() {	// Brute checks for duplicates
+		if(stringsColors.contains("Black")) {
+			int count = 0;
+			for(int i = 0; i < stringsColors.size(); i++) {
+				if(stringsColors.get(i) == "Black") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsColors.size(); j++) {
+					if(stringsColors.get(j) == "Black") {
+						stringsColors.remove(j);
+					}
+				}
+			}
+			
+		}
+		if(stringsColors.contains("Blue")) {
+			int count = 0;
+			for(int i = 0; i < stringsColors.size(); i++) {
+				if(stringsColors.get(i) == "Blue") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsColors.size(); j++) {
+					if(stringsColors.get(j) == "Blue") {
+						stringsColors.remove(j);
+					}
+				}
+			}
+			
+		}
+		if(stringsColors.contains("Red")) {
+			int count = 0;
+			for(int i = 0; i < stringsColors.size(); i++) {
+				if(stringsColors.get(i) == "Red") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsColors.size(); j++) {
+					if(stringsColors.get(j) == "Red") {
+						stringsColors.remove(j);
+					}
+				}
+			}
+			
+		}
+		if(stringsColors.contains("Green")) {
+			int count = 0;
+			for(int i = 0; i < stringsColors.size(); i++) {
+				if(stringsColors.get(i) == "Green") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsColors.size(); j++) {
+					if(stringsColors.get(j) == "Green") {
+						stringsColors.remove(j);
+					}
+				}
+			}
+			
+		}
+		if(stringsShapes.contains("Rectangle")) {
+			int count = 0;
+			for(int i = 0; i < stringsShapes.size(); i++) {
+				if(stringsShapes.get(i) == "Rectangle") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsShapes.size(); j++) {
+					if(stringsShapes.get(j) == "Rectangle") {
+						stringsShapes.remove(j);
+					}
+				}
+			}	
+		}
+		if(stringsShapes.contains("Diamond")) {
+			int count = 0;
+			for(int i = 0; i < stringsShapes.size(); i++) {
+				if(stringsShapes.get(i) == "Diamond") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsShapes.size(); j++) {
+					if(stringsShapes.get(j) == "Diamond") {
+						stringsShapes.remove(j);
+					}
+				}
+			}	
+		}
+		if(stringsShapes.contains("Circle")) {
+			int count = 0;
+			for(int i = 0; i < stringsShapes.size(); i++) {
+				if(stringsShapes.get(i) == "Circle") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsShapes.size(); j++) {
+					if(stringsShapes.get(j) == "Circle") {
+						stringsShapes.remove(j);
+					}
+				}
+			}	
+		}
+		if(stringsShapes.contains("Triangle")) {
+			int count = 0;
+			for(int i = 0; i < stringsShapes.size(); i++) {
+				if(stringsShapes.get(i) == "Triangle") {count++;}
+			}
+			if(count > 1) {
+				for(int j = 0; j < stringsShapes.size(); j++) {
+					if(stringsShapes.get(j) == "Triangle") {
+						stringsShapes.remove(j);
+					}
+				}
+			}	
+		}
+		
+	}
+
 	
 }
