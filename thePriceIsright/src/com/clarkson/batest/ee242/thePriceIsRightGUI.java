@@ -231,7 +231,7 @@ public class thePriceIsRightGUI extends Application{
 				public void handle(ActionEvent event) {		
 					
 					checkStringArrays();
-
+					
 					gameWindow(primaryStage);	// switches to game
 
 				}
@@ -429,7 +429,30 @@ public class thePriceIsRightGUI extends Application{
 		}
 	}
 	
-	public void checkStringArrays() {	// Brute checks for duplicates
+	public void checkStringArrays() {	// Brute checks for duplicates or sets defaults
+		
+		if(stringsShapes.isEmpty() || stringsColors.isEmpty()) {
+			if(stringsShapes.isEmpty()) {
+				stringsShapes.add("Rectangle");
+				stringsShapes.add("Circle");
+				stringsShapes.add("Triangle");
+				stringsShapes.add("Diamond");
+				}
+			if(stringsColors.isEmpty()) {
+				stringsColors.add("Green");
+				stringsColors.add("Black");
+				stringsColors.add("Red");
+				stringsColors.add("Blue");
+			}if(chosenColors.isEmpty()){
+				chosenColors.add(Color.BLACK);
+				chosenColors.add(Color.GREEN);
+				chosenColors.add(Color.RED);
+				chosenColors.add(Color.BLUE);
+			}			
+			return;
+		}
+		
+		
 		if(stringsColors.contains("Black")) {
 			int count = 0;
 			for(int i = 0; i < stringsColors.size(); i++) {
