@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,10 +34,9 @@ import javafx.scene.text.TextAlignment;
  * All funtionality is complete.
  * 
  * Still to be Done:
- * 		--Prettification.
- * 		--Animation of card flip.
- * 		--javadoc comments(if necessary).
- * 		--.jar
+ * 		--Animation of card flip. <-Troy
+ * 		--javadoc comments(if necessary). <--JavaDoc comments Troy
+ * 		--.jar						<-Friday Problem
  * 		--submit.
  * 
  * @author tony	:3
@@ -54,7 +54,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class thePriceIsRightGUI extends Application{
 	
-	GameFunctionality engine = new GameFunctionality();
+	//GameFunctionality engine = new GameFunctionality();
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -72,7 +72,7 @@ public class thePriceIsRightGUI extends Application{
 	ArrayList<StackPane> cards	   = new ArrayList<StackPane>();
 	ArrayList<Shape> cardShape	 	= new ArrayList<Shape>();
 	
-	GameFunctionality gameFunction	= new GameFunctionality();
+	//GameFunctionality gameFunction	= new GameFunctionality();
 	
 	ArrayList<Color> chosenColors = new ArrayList<Color>();
 
@@ -92,17 +92,18 @@ public class thePriceIsRightGUI extends Application{
 			Scene newGame = new Scene(root);
 			newGame.getStylesheets().add( 
 					getClass().getResource("application.css").toExternalForm() );
-			
+			root.getStyleClass().add("backroundtheme");
 			Insets insets = new Insets(10,10,10,10);
 
 			Label welcome = new Label("Welcome to THE SHAPE IS RIGHT!!\n   ");
+			welcome.getStyleClass().add("texttheme");
 			Label ShapeMessage = new Label("Please Select how many shapes you would like to use:     ");
-
+			ShapeMessage.getStyleClass().add("texttheme");
 			ChoiceBox<String> selectShapeNum = new ChoiceBox<String>(
 					FXCollections.observableArrayList(
 				   "3","5","7", "9","11")
 			);
-
+			
 			HBox numShapes = new HBox();
 			numShapes.getChildren().addAll(ShapeMessage, selectShapeNum);
 
@@ -111,16 +112,19 @@ public class thePriceIsRightGUI extends Application{
 			VBox Colors = new VBox();
 
 			Label whatShape = new Label("What Shapes Would You Like?");
+			whatShape.getStyleClass().add("texttheme");
 			ListView<String> shapePicker = new ListView<String> (FXCollections.observableArrayList(
 					"Rectangle", "Circle", "Triangle", "Diamond"));	//These should be changed once shapes are finalized.
 			shapePicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			
 			Label whatColor = new Label("What Colors Would You Like?");
+			whatColor.getStyleClass().add("texttheme");
 			ListView<String> colorPicker = new ListView<String> (FXCollections.observableArrayList(
 					"Blue", "Red", "Green", "Black"));	// these should also likely be changed.
 			colorPicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			        
 	        Button quitButton = new Button("Quit");
+	        quitButton.getStyleClass().add("buttontheme");
 	        quitButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {		
 					
@@ -143,6 +147,7 @@ public class thePriceIsRightGUI extends Application{
 			setup.getChildren().addAll(Shapes,Colors);
 
 			Button beginBTN = new Button("BEGIN!!!!!!");
+			beginBTN.getStyleClass().add("buttontheme");
 			beginBTN.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {		
 										
@@ -201,14 +206,15 @@ public class thePriceIsRightGUI extends Application{
 				}
 			});
 			
+			
 			HBox buttons = new HBox(10);
 			buttons.getChildren().addAll(beginBTN, quitButton);
 			buttons.setAlignment(Pos.CENTER);
-
 			root.getChildren().addAll(welcome, numShapes,setup, buttons);
 			root.setAlignment(Pos.CENTER);
 			root.setPadding(insets);
-
+			primaryStage.initStyle( StageStyle.UTILITY  );	
+			primaryStage.setTitle("The Shapes are Right!");
 			primaryStage.setScene(newGame);
 			primaryStage.sizeToScene();
 			primaryStage.show();
@@ -222,9 +228,12 @@ public class thePriceIsRightGUI extends Application{
 		try {
 			VBox organizer = new VBox();		// I'm not sure how to safely make a file in git, so this is best for now
 			Scene Game = new Scene(organizer);
-
+			Game.getStylesheets().add( 
+					getClass().getResource("application.css").toExternalForm() );
+			organizer.getStyleClass().add("backroundtheme");
 			Label title = new Label("The Shapes Are Right!!!!");
-			title.setTextAlignment(TextAlignment.CENTER);
+			title.getStyleClass().add("titletheme");
+			//title.setTextAlignment(TextAlignment.CENTER);
 
 //Holds the cards
 			HBox cardArea = new HBox(10);
@@ -245,7 +254,6 @@ public class thePriceIsRightGUI extends Application{
 			}
 			cardArea.getChildren().addAll(cards);
 			
-			RectangleCard actualCard = new RectangleCard();
 			
 //Card Color Guess
 			ListView<String> CardColorGuess = new ListView<String> (
@@ -262,9 +270,10 @@ public class thePriceIsRightGUI extends Application{
 
 //score counter and current shapes			
 			Label currentShapes = new Label("Cards Dealt:\n" + cardsInHandRandom);
+			currentShapes.getStyleClass().add("texttheme");
 			currentShapes.setTextAlignment(TextAlignment.CENTER);
 			Label currentScore = new Label("Score: " + Score);
-
+			currentScore.getStyleClass().add("texttheme");
 //Holds controls and Stats
 			HBox ControlArea = new HBox(10);
 			ControlArea.setPadding(new Insets(10,10,10,10));
@@ -276,7 +285,7 @@ public class thePriceIsRightGUI extends Application{
 
 //Label to say to guess
 			Label guess = new Label("Guess the Next Shape and Color!!");
-
+			guess.getStyleClass().add("texttheme");
 			
 //data for flip
 
@@ -284,6 +293,7 @@ public class thePriceIsRightGUI extends Application{
 			
 //Flip Next Card Button
 			Button flipNext = new Button("Flip Next Card!");
+			flipNext.getStyleClass().add("buttontheme");
 			flipNext.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 				
@@ -356,6 +366,7 @@ public class thePriceIsRightGUI extends Application{
 
 //Quits the Game
 			 Button quitButton = new Button("Quit");
+			 quitButton.getStyleClass().add("buttontheme");
 		        quitButton.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {		
 						
@@ -370,7 +381,7 @@ public class thePriceIsRightGUI extends Application{
 
 			organizer.getChildren().addAll(title, cardArea,guess, ControlArea, Buttons);
 
-			organizer.getChildren().add(actualCard.returnShape());
+			//organizer.getChildren().add(actualCard.returnShape());
 
 			organizer.setPadding(new Insets(10,10,10,10));
 			organizer.setAlignment(Pos.CENTER);
@@ -466,16 +477,20 @@ public class thePriceIsRightGUI extends Application{
 		
 		VBox organizer = new VBox(10);
 		Scene GameOver = new Scene(organizer);
-		
+		GameOver.getStylesheets().add( 
+				getClass().getResource("application.css").toExternalForm() );
+		organizer.getStyleClass().add("backroundtheme");
 		Label title = new Label("Game Over!\n Don't Forget To Get Your Pets Spayed or Neutered!!");
 		title.setTextAlignment(TextAlignment.CENTER);
-		
+		title.getStyleClass().add("texttheme");
 		Label finalScore = new Label("Final Score: " + Score);
-		
+		finalScore.getStyleClass().add("texttheme");
 		Label message = new Label("What Would You Like to Do?");
+		message.getStyleClass().add("texttheme");
 		message.setTextAlignment(TextAlignment.CENTER);
 		
         Button quitButton = new Button("Quit");
+        quitButton.getStyleClass().add("buttontheme");
         quitButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {		
 				
@@ -484,6 +499,7 @@ public class thePriceIsRightGUI extends Application{
 		});
         
         Button newGame = new Button("New Game!");		//TOTAL RESET.
+        newGame.getStyleClass().add("buttontheme");
         newGame.setOnAction(new EventHandler<ActionEvent>() {
         	public void handle(ActionEvent event) {
         		numCards = 0;

@@ -1,3 +1,31 @@
 .cardTheme {
 	-fx-background-color: #1c711f;
 }
+
+.backroundtheme{
+	-fx-background-color: #2980b9; /* used for GridPane */
+	-fx-background-radius: 5; /* used for GridPane */
+	-fx-padding: 10 10 10 20; /* used for GridPane */
+	
+	-fx-alignment: center; /* used for GridPane and HBox */
+	-fx-hgap: 10.0; /* used for GridPane */
+	-fx-spacing: 10.0; /* used for HBox */
+}
+.titletheme{
+	-fx-font: 24px "Arial";
+	-fx-text-fill: #FFF;
+	-fx-alignment: center;
+}
+.buttontheme {
+	-fx-background-color: #3498db;
+	-fx-text-fill: #FFF;
+}
+
+.texttheme{
+	-fx-text-fill: #FFF;
+}
+
+.dietheme{
+	-fx-font: 72px "signboard";
+	-fx-fill: #F00;
+}
