@@ -1,18 +1,13 @@
 package com.clarkson.batest.ee242;
 
-//import java.awt.Color;
-
 import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Random;
 import java.util.Vector;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -33,10 +28,22 @@ import javafx.geometry.Insets;
 import javafx.scene.shape.*;
 import javafx.scene.text.TextAlignment;
 
-
-/* TONY'S NOTES
-
-*/
+/*** Tony's notes. ***
+ * 
+ * All funtionality is complete.
+ * 
+ * Still to be Done:
+ * 		--Prettification.
+ * 		--Animation of card flip.
+ * 		--javadoc comments(if necessary).
+ * 		--.jar
+ * 		--submit.
+ * 
+ * @author tony	:3
+ * 
+ * 
+ *
+ */
 
 /*Troy's notes
  * fix new hand hand functionality  
@@ -55,20 +62,29 @@ public class thePriceIsRightGUI extends Application{
 
 	int numCards = 5;
 	int Score = 0;
-	String cardsInHand = new String();
+	
+	String cardsInHandRandom = new String();
+	ArrayList<String> shapesInHand = new ArrayList<String>();
+	ArrayList<String> colorsInHand = new ArrayList<String>();
+	
 	ArrayList<ImageView> cardBacks = new ArrayList<ImageView>();
 	ArrayList<Rectangle> cardFront = new ArrayList<Rectangle>();
 	ArrayList<StackPane> cards	   = new ArrayList<StackPane>();
 	ArrayList<Shape> cardShape	 	= new ArrayList<Shape>();
+	
 	GameFunctionality gameFunction	= new GameFunctionality();
+	
 	ArrayList<Color> chosenColors = new ArrayList<Color>();
-//	ArrayList<Shape> chosenShapes = new ArrayList<Shape>();	
+
 	ArrayList<String> stringsColors = new ArrayList<String>();
 	ArrayList<String> stringsShapes = new ArrayList<String>();
+	
 	protected static Random rand = new Random();
-	int numChoices[] = new int[]{3,5,7,9,11};
+//	int numChoices[] = new int[]{3,5,7,9,11};
 	
 	int flipCounter=0;
+	int roundCounter=0;
+	
 	@Override
 	public void start(Stage primaryStage) {	// starts the "new game" window. this can be changed if necessary
 		try {
@@ -86,14 +102,6 @@ public class thePriceIsRightGUI extends Application{
 					FXCollections.observableArrayList(
 				   "3","5","7", "9","11")
 			);
-			
-			selectShapeNum.getSelectionModel().selectedIndexProperty()
-				.addListener(new ChangeListener <Number> () {
-					public void changed(ObservableValue ov, Number value, Number new_value) {
-						numCards = numChoices[new_value.intValue()];
-					}
-			});
-			
 
 			HBox numShapes = new HBox();
 			numShapes.getChildren().addAll(ShapeMessage, selectShapeNum);
@@ -107,112 +115,11 @@ public class thePriceIsRightGUI extends Application{
 					"Rectangle", "Circle", "Triangle", "Diamond"));	//These should be changed once shapes are finalized.
 			shapePicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			
-	        shapePicker.getSelectionModel().getSelectedItems().addListener(
-	        		new ListChangeListener<String>() {
-						@Override
-						public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
-							
-							c.next();
-							if(c.wasAdded()){
-								
-								List<? extends String> added = c.getAddedSubList();
-								for (int i = 0; i<added.size(); i++) {
-									if(added.get(i) == "Rectangle") {
-//										chosenShapes.add(new Rectangle(50.0, 50.0));
-										stringsShapes.add("Rectangle");
-									} else if (added.get(i) == "Circle") {
-//										chosenShapes.add(new Circle(25.0));
-										stringsShapes.add("Circle");
-									}else if (added.get(i) == "Triangle") {
-//										chosenShapes.add(new Polygon(25.0, 0.0, 50.0, 50.0, 0.0, 50.0)); 
-										stringsShapes.add("Triangle");
-									} else if (added.get(i) == "Diamond") {
-//										Shape tempShape =new Rectangle(50.0, 50.0);
-//										tempShape.setRotate(45.0);
-//										chosenShapes.add(tempShape);
-										stringsShapes.add("Diamond");
-									}
-									
-								}
-																
-								
-							} if (c.wasRemoved()) {
-								
-								List<? extends String> removed = c.getRemoved();
-								for (int i = 0; i<removed.size(); i++) {
-									if(removed.get(i) == "Rectangle") {
-										stringsShapes.remove("Rectangle");
-									} else if (removed.get(i) == "Circle") {
-										stringsShapes.remove("Circle");
-									} else if (removed.get(i) == "Triangle") {
-										stringsShapes.remove("Triangle");
-									} else if (removed.get(i) == "Diamond") {
-										stringsShapes.remove("Diamond");
-									} else {
-										//bad things happened.
-										break;
-									}
-								}
-							}	
-						}
-	        	
-	        });
-			
 			Label whatColor = new Label("What Colors Would You Like?");
 			ListView<String> colorPicker = new ListView<String> (FXCollections.observableArrayList(
 					"Blue", "Red", "Green", "Black"));	// these should also likely be changed.
 			colorPicker.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-			
-	        colorPicker.getSelectionModel().getSelectedItems().addListener(
-	        		new ListChangeListener<String>() {
-						@Override
-						public void onChanged(javafx.collections.ListChangeListener.Change<? extends String> c) {
-							c.next();
-							if(c.wasAdded()){
-								
-								List<? extends String> added = c.getAddedSubList();
-								for (int i = 0; i<added.size(); i++) {
-									if(added.get(i) == "Blue") {
-										chosenColors.add(Color.BLUE);
-										stringsColors.add("Blue");
-									} else if (added.get(i) == "Red") {
-										chosenColors.add(Color.RED);
-										stringsColors.add("Red");
-									} else if (added.get(i) == "Green") {
-										chosenColors.add(Color.GREEN);
-										stringsColors.add("Green");
-									} else if (added.get(i) == "Black") {
-										chosenColors.add(Color.BLACK);
-										stringsColors.add("Black");
-									} else {
-										//bad things happened.
-										break;
-									}
-								}
-																
-								
-							} if (c.wasRemoved()) {
-								
-								List<? extends String> removed = c.getRemoved();
-								for (int i = 0; i<removed.size(); i++) {
-									if(removed.get(i) == "Blue") {
-										chosenColors.remove(Color.BLUE);
-									} else if (removed.get(i) == "Red") {
-										chosenColors.remove(Color.RED);
-									} else if (removed.get(i) == "Green") {
-										chosenColors.remove(Color.GREEN);
-									} else if (removed.get(i) == "Black") {
-										chosenColors.remove(Color.BLACK);
-									} else {
-										//bad things happened.
-										break;
-									}
-								}
-							}	
-						}
-	        	
-	        });
-	        
+			        
 	        Button quitButton = new Button("Quit");
 	        quitButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {		
@@ -238,11 +145,59 @@ public class thePriceIsRightGUI extends Application{
 			Button beginBTN = new Button("BEGIN!!!!!!");
 			beginBTN.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {		
+										
+					int numberOfChosenColors = (colorPicker.getSelectionModel().getSelectedItems().size());
+					int numberOfChosenShapes = (shapePicker.getSelectionModel().getSelectedItems().size());
+						
+					if(selectShapeNum.getSelectionModel().isEmpty()){
+						numCards = 7;
+					} else {
+						numCards = Integer.parseInt(selectShapeNum.getSelectionModel().getSelectedItem());	
+					}
+						
 					
-					checkStringArrays();
+					if(numberOfChosenColors == 0) {
+						stringsColors.add("Black");
+						stringsColors.add("Blue");
+						stringsColors.add("Red");
+						stringsColors.add("Green");
+						chosenColors.add(Color.BLACK);
+						chosenColors.add(Color.BLUE);
+						chosenColors.add(Color.RED);
+						chosenColors.add(Color.GREEN);
+						
+					} else {
+						for(int i = 0; i<numberOfChosenColors;i++) {
+							stringsColors.add(colorPicker.getSelectionModel().getSelectedItems().get(i));
+						}
+						
+						for(int k = 0; k<numberOfChosenColors; k++){
+							if(stringsColors.get(k)=="Black") {
+								chosenColors.add(Color.BLACK);
+							} else if(stringsColors.get(k)=="Blue") {
+								chosenColors.add(Color.BLUE);
+							} else if(stringsColors.get(k)=="Red") {
+								chosenColors.add(Color.RED);
+							} else if(stringsColors.get(k)=="Green") {
+								chosenColors.add(Color.GREEN);
+							}
+						}
+					}	
+					
+					if(numberOfChosenShapes == 0) {
+						stringsShapes.add("Rectangle");
+						stringsShapes.add("Triangle");
+						stringsShapes.add("Circle");
+						stringsShapes.add("Diamond");
+						
+					} else {
+						for(int j = 0; j<numberOfChosenShapes;j++){
+							stringsShapes.add(shapePicker.getSelectionModel().getSelectedItems().get(j));
+						}
+					}
 					
 					gameWindow(primaryStage);	// switches to game
-
+					
 				}
 			});
 			
@@ -261,8 +216,6 @@ public class thePriceIsRightGUI extends Application{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
 	}
 
 	public void gameWindow(Stage stage) {	// should probably be moved to it's own file.
@@ -270,9 +223,10 @@ public class thePriceIsRightGUI extends Application{
 			VBox organizer = new VBox();		// I'm not sure how to safely make a file in git, so this is best for now
 			Scene Game = new Scene(organizer);
 
-			Label title = new Label("The Shapes Are Right!!!!\n Don't forget to get your pets spayed or neutered!!");
+			Label title = new Label("The Shapes Are Right!!!!");
 			title.setTextAlignment(TextAlignment.CENTER);
-			
+
+//Holds the cards
 			HBox cardArea = new HBox(10);
 
 			//Troy's edits
@@ -283,9 +237,6 @@ public class thePriceIsRightGUI extends Application{
 				cardFront.get(cardCount).setFill(Color.WHITE);
 				cardBacks.add(new ImageView());
 				cardBacks.get(cardCount).setImage(new Image(getClass().getResource("cardBackImage.jpg").toExternalForm()));
-				//cardShape.get(cardCount).setRotate(45.0);	// needs to add randomization, but nice.
-				//cardShape.get(cardCount).setWidth(50.0);
-				//add in card objects; square triangles ...
 				cards.add(new StackPane());			
 				cards.get(cardCount).getChildren().add(cardFront.get(cardCount));
 				cards.get(cardCount).getChildren().add(cardShape.get(cardCount));
@@ -295,24 +246,26 @@ public class thePriceIsRightGUI extends Application{
 			cardArea.getChildren().addAll(cards);
 			
 			RectangleCard actualCard = new RectangleCard();
-
+			
+//Card Color Guess
 			ListView<String> CardColorGuess = new ListView<String> (
 					FXCollections.observableArrayList(stringsColors));
 
 			CardColorGuess.setPrefHeight((24*4)+4);
 			CardColorGuess.setPrefWidth(125);
-
+			
+//card Shape Guess
 			ListView<String> CardShapeGuess = new ListView<String>(FXCollections.observableArrayList(stringsShapes));
 
 			CardShapeGuess.setPrefHeight((24*4)+4);
 			CardShapeGuess.setPrefWidth(125);
 
-			//score counter and current shapes			
-			Label currentShapes = new Label("Cards Dealt:\n" + cardsInHand);
+//score counter and current shapes			
+			Label currentShapes = new Label("Cards Dealt:\n" + cardsInHandRandom);
 			currentShapes.setTextAlignment(TextAlignment.CENTER);
 			Label currentScore = new Label("Score: " + Score);
 
-			
+//Holds controls and Stats
 			HBox ControlArea = new HBox(10);
 			ControlArea.setPadding(new Insets(10,10,10,10));
 			ControlArea.getChildren().addAll(currentScore,CardShapeGuess, CardColorGuess,currentShapes);
@@ -321,40 +274,87 @@ public class thePriceIsRightGUI extends Application{
 			cardArea.setPadding(new Insets(10,10,10,10));
 			cardArea.setAlignment(Pos.CENTER);
 
+//Label to say to guess
 			Label guess = new Label("Guess the Next Shape and Color!!");
 
+			
+//data for flip
+
+		
+			
+//Flip Next Card Button
 			Button flipNext = new Button("Flip Next Card!");
 			flipNext.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
+				
 					if (flipCounter < numCards){
 						cardBacks.get(flipCounter).setVisible(false);	// needs changed to cutesy animation				
-						flipCounter++;
+		
+		//Calculates Score
 						
+						if(CardColorGuess.getSelectionModel().isEmpty()|| CardShapeGuess.getSelectionModel().isEmpty()){
+							//nothing. no points can be earned.
+						} else {
+							String ColorGuess = new String();
+							ColorGuess=CardColorGuess.getSelectionModel().getSelectedItem();
+							String ShapeGuess = new String();
+							ShapeGuess =CardShapeGuess.getSelectionModel().getSelectedItem();
+							
+							if (ColorGuess.equals(colorsInHand.get(flipCounter))){
+								if(ShapeGuess.equals(shapesInHand.get(flipCounter))){
+					        		Score = Score + 1;
+					        		currentScore.setText("Score: " + Score);
+					        	}
+						    }
+						}
+						
+						flipCounter++;
+		//End of round/Game
 						if (flipCounter==numCards){
-							flipNext.setText("New Game?");
+							flipNext.setText("Next Round!!");
+							roundCounter = roundCounter +1;
+							if(roundCounter == 3) {
+								gameOver(stage);
+							}
 						}
 					}
-					else{
-						//System.out.println("hey listen");
-						
-							flipCounter=0;
-						
+
+					else{		//RESETS FOR NEXT ROUND		
+						flipCounter=0;
+
+						flipNext.setText("Flip Next Card!");
+							
+						cardShape.clear();
+						colorsInHand.clear();
+						shapesInHand.clear();
+						cardsInHandRandom = "";
+
 						cardShape=newHand();
+
+			//Rebuilds Hand
+						cardArea.getChildren().clear();
+						cards.clear();
+						
+						for( int cardCount =0; cardCount < numCards; cardCount++){
+							cards.add(new StackPane());			
+							cards.get(cardCount).getChildren().add(cardFront.get(cardCount));
+							cards.get(cardCount).getChildren().add(cardShape.get(cardCount));
+							cards.get(cardCount).getChildren().add(cardBacks.get(cardCount));
+							
+						}
+						cardArea.getChildren().addAll(cards);
+				
 						for(int tempCount=0; tempCount < numCards; tempCount++){
-							//cards.get(tempCount).getChildren().set(0, cardShape.get(tempCount));
 							cardBacks.get(tempCount).setVisible(true);
 						}
 						
-					
+						currentShapes.setText("Cards Dealt:\n" + cardsInHandRandom);
 						
-						
-						flipNext.setText("Flip Next Card!");
 					}
-					//with the array this will be able to change an index of the array, too
-
 				}
 			});
-			
+
+//Quits the Game
 			 Button quitButton = new Button("Quit");
 		        quitButton.setOnAction(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent event) {		
@@ -362,7 +362,8 @@ public class thePriceIsRightGUI extends Application{
 						Platform.exit();
 					}
 				});
-		        
+	
+//sets up formatting
 		    HBox Buttons = new HBox(10);
 		    Buttons.getChildren().addAll(flipNext, quitButton);
 		    Buttons.setAlignment(Pos.CENTER);
@@ -415,179 +416,109 @@ public class thePriceIsRightGUI extends Application{
 			cardList.add(tempShape);
 		}
 		
-		whatCards(cardList);
-		
+		whatCards(cardList);	// deleting this line here will ruin EVERYTHING.
 		return cardList;
 	}
 	
 	public void whatCards(ArrayList<Shape> hand) {
 		
 		Vector<String> currentCards = new Vector<String>();
-		
+				
 		for(int i = 0; i <numCards; i++) {	//generates array of strings rep'ing the current hand.
 			Shape current = hand.get(i);
 			String currentString = new String();
 			if(current.getFill() == Color.BLACK) {
 				currentString = "Black ";
+				colorsInHand.add("Black");
 			} else if (current.getFill() == Color.RED) {
 				currentString = "Red ";
+				colorsInHand.add("Red");
 			} else if (current.getFill() == Color.BLUE) {
 				currentString = "Blue ";
+				colorsInHand.add("Blue");
 			} else if (current.getFill() == Color.GREEN) {
 				currentString = "Green ";
+				colorsInHand.add("Green");
 			}
 			
 			if(current.getRotate() == 45.0) {	// diamond
 				currentString += " Diamond\n";
+				shapesInHand.add("Diamond");
 			} else if ( current.getRotate() == 1080.0){		
 				currentString += "Circle\n";
+				shapesInHand.add("Circle");
 			} else if ( current.getRotate() == 360.0) {
 				currentString += "Rectangle\n";
+				shapesInHand.add("Rectangle");
 			} else if ( current.getRotate() == 720.0) {
 				currentString += "Triangle\n";
+				shapesInHand.add("Triangle");
 			}
 			currentCards.add(currentString);
 		}
 		for(int j = 0; j<numCards; j++ ) {	//generates String randomizing what cards are in the hand
 			int tempIndex = rand.nextInt(numCards-j);
-			cardsInHand += currentCards.remove(tempIndex);
+			cardsInHandRandom += currentCards.remove(tempIndex);
 		}
-	}
-	
-	public void checkStringArrays() {	// Brute checks for duplicates or sets defaults
-		
-		if(stringsShapes.isEmpty() || stringsColors.isEmpty()) {
-			if(stringsShapes.isEmpty()) {
-				stringsShapes.add("Rectangle");
-				stringsShapes.add("Circle");
-				stringsShapes.add("Triangle");
-				stringsShapes.add("Diamond");
-				}
-			if(stringsColors.isEmpty()) {
-				stringsColors.add("Green");
-				stringsColors.add("Black");
-				stringsColors.add("Red");
-				stringsColors.add("Blue");
-			}if(chosenColors.isEmpty()){
-				chosenColors.add(Color.BLACK);
-				chosenColors.add(Color.GREEN);
-				chosenColors.add(Color.RED);
-				chosenColors.add(Color.BLUE);
-			}			
-			return;
-		}
-		
-		
-		if(stringsColors.contains("Black")) {
-			int count = 0;
-			for(int i = 0; i < stringsColors.size(); i++) {
-				if(stringsColors.get(i) == "Black") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsColors.size(); j++) {
-					if(stringsColors.get(j) == "Black") {
-						stringsColors.remove(j);
-					}
-				}
-			}
-			
-		}
-		if(stringsColors.contains("Blue")) {
-			int count = 0;
-			for(int i = 0; i < stringsColors.size(); i++) {
-				if(stringsColors.get(i) == "Blue") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsColors.size(); j++) {
-					if(stringsColors.get(j) == "Blue") {
-						stringsColors.remove(j);
-					}
-				}
-			}
-			
-		}
-		if(stringsColors.contains("Red")) {
-			int count = 0;
-			for(int i = 0; i < stringsColors.size(); i++) {
-				if(stringsColors.get(i) == "Red") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsColors.size(); j++) {
-					if(stringsColors.get(j) == "Red") {
-						stringsColors.remove(j);
-					}
-				}
-			}
-			
-		}
-		if(stringsColors.contains("Green")) {
-			int count = 0;
-			for(int i = 0; i < stringsColors.size(); i++) {
-				if(stringsColors.get(i) == "Green") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsColors.size(); j++) {
-					if(stringsColors.get(j) == "Green") {
-						stringsColors.remove(j);
-					}
-				}
-			}
-			
-		}
-		if(stringsShapes.contains("Rectangle")) {
-			int count = 0;
-			for(int i = 0; i < stringsShapes.size(); i++) {
-				if(stringsShapes.get(i) == "Rectangle") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsShapes.size(); j++) {
-					if(stringsShapes.get(j) == "Rectangle") {
-						stringsShapes.remove(j);
-					}
-				}
-			}	
-		}
-		if(stringsShapes.contains("Diamond")) {
-			int count = 0;
-			for(int i = 0; i < stringsShapes.size(); i++) {
-				if(stringsShapes.get(i) == "Diamond") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsShapes.size(); j++) {
-					if(stringsShapes.get(j) == "Diamond") {
-						stringsShapes.remove(j);
-					}
-				}
-			}	
-		}
-		if(stringsShapes.contains("Circle")) {
-			int count = 0;
-			for(int i = 0; i < stringsShapes.size(); i++) {
-				if(stringsShapes.get(i) == "Circle") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsShapes.size(); j++) {
-					if(stringsShapes.get(j) == "Circle") {
-						stringsShapes.remove(j);
-					}
-				}
-			}	
-		}
-		if(stringsShapes.contains("Triangle")) {
-			int count = 0;
-			for(int i = 0; i < stringsShapes.size(); i++) {
-				if(stringsShapes.get(i) == "Triangle") {count++;}
-			}
-			if(count > 1) {
-				for(int j = 0; j < stringsShapes.size(); j++) {
-					if(stringsShapes.get(j) == "Triangle") {
-						stringsShapes.remove(j);
-					}
-				}
-			}	
-		}
-		
 	}
 
-	
+	public void gameOver(Stage stage) {
+		
+		VBox organizer = new VBox(10);
+		Scene GameOver = new Scene(organizer);
+		
+		Label title = new Label("Game Over!\n Don't Forget To Get Your Pets Spayed or Neutered!!");
+		title.setTextAlignment(TextAlignment.CENTER);
+		
+		Label finalScore = new Label("Final Score: " + Score);
+		
+		Label message = new Label("What Would You Like to Do?");
+		message.setTextAlignment(TextAlignment.CENTER);
+		
+        Button quitButton = new Button("Quit");
+        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {		
+				
+				Platform.exit();
+			}
+		});
+        
+        Button newGame = new Button("New Game!");		//TOTAL RESET.
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
+        	public void handle(ActionEvent event) {
+        		numCards = 0;
+        		Score = 0;
+        		cardsInHandRandom = "";
+        		shapesInHand.clear();
+        		colorsInHand.clear();
+        		cardBacks.clear();
+        		cardFront.clear();
+        		cards.clear();
+        		cardShape.clear();
+        		chosenColors.clear();
+        		stringsColors.clear();
+        		stringsShapes.clear();
+        		flipCounter=0;
+        		roundCounter=0;
+        		
+        		start(stage);
+        		
+        	}
+        });
+		
+		HBox Buttons = new HBox(10);
+		Buttons.getChildren().addAll(newGame, quitButton);
+		
+		organizer.setAlignment(Pos.CENTER);
+		Buttons.setAlignment(Pos.CENTER);
+		message.setTextAlignment(TextAlignment.CENTER);
+		organizer.setPadding(new Insets(10,10,10,10));
+		
+		organizer.getChildren().addAll(title, finalScore, message, Buttons);
+		stage.setScene(GameOver);
+		stage.sizeToScene();
+		stage.show();
+		
+		
+	}
 }
