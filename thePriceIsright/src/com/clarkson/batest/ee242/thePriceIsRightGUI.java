@@ -1,17 +1,24 @@
 package com.clarkson.batest.ee242;
 
+
 import java.util.ArrayList;
 
 import java.util.Random;
 import java.util.Vector;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -298,7 +305,8 @@ public class thePriceIsRightGUI extends Application{
 				public void handle(ActionEvent event) {
 				
 					if (flipCounter < numCards){
-						cardBacks.get(flipCounter).setVisible(false);	// needs changed to cutesy animation				
+						FlipCard(cards.get(flipCounter));
+//						/cardBacks.get(flipCounter).setVisible(false);	// needs changed to cutesy animation				
 		
 		//Calculates Score
 						
@@ -537,4 +545,41 @@ public class thePriceIsRightGUI extends Application{
 		
 		
 	}
+	
+	void FlipCard(StackPane fullCard){
+		Property translateXProperty = fullCard.translateXProperty();
+		Property translateScalProperty = fullCard.scaleXProperty();
+		Property transperencyProperty =fullCard.getChildren().get(2).opacityProperty();
+	            new FadeTransition(Duration.millis(1),fullCard.getChildren().get(1) );
+		KeyFrame keyFrame0 = new KeyFrame(
+				Duration.ZERO,
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( translateScalProperty ,1.0 ),
+				new KeyValue( transperencyProperty, 1.0));
+		KeyFrame keyFrame500 = new KeyFrame(
+				new Duration( 500 ),
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( translateScalProperty ,0.0 ),
+				new KeyValue( transperencyProperty, 1.0));
+		KeyFrame keyFrame501 = new KeyFrame(
+				new Duration( 501 ),
+				new KeyValue( translateXProperty,00.0 ),
+				new KeyValue( translateScalProperty ,0.0 ),
+				new KeyValue( transperencyProperty, 0.0));
+		KeyFrame keyFrame1000 = new KeyFrame(
+				new Duration( 1000 ),
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( translateScalProperty ,1.0 ),
+				new KeyValue( transperencyProperty, 0.0));
+		
+		
+		Timeline timeline = new Timeline();
+		timeline.getKeyFrames().add( keyFrame0 );
+		timeline.getKeyFrames().add( keyFrame500 );
+		timeline.getKeyFrames().add(keyFrame501);
+		timeline.getKeyFrames().add( keyFrame1000 );
+		timeline.play();
+	}
+	
+	
 }
