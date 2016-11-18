@@ -538,8 +538,11 @@ public class thePriceIsRightGUI extends Application{
         		flipCounter=0;
         		roundCounter=0;
         		
-        		start(stage);
         		
+        		
+        		start(new Stage());
+        		
+        		stage.close();
         	}
         });
 		
