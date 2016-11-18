@@ -36,13 +36,14 @@ import javafx.geometry.Insets;
 import javafx.scene.shape.*;
 import javafx.scene.text.TextAlignment;
 
-/*** Tony's notes. ***
+/* Tony's notes. ***
  * 
  * All funtionality is complete.
  * 
  * Still to be Done:
- * 		--Animation of card flip. <-Troy
- * 		--javadoc comments(if necessary). <--JavaDoc comments Troy
+ * 		
+ * 		--WHAT DOES WHAT HANDS DO!?
+ * 			-Javadocs
  * 		--.jar						<-Friday Problem
  * 		--submit.
  * 
@@ -52,24 +53,28 @@ import javafx.scene.text.TextAlignment;
  *
  */
 
-/*Troy's notes
- * fix new hand hand functionality  
- * create string based on what cards are available.
- * 
- * @author troy
+/**
+ *This is the first window the user sees. It sets up the stage and handles all the sceen
+ *This creates all the Array lists that are used as the logic for the function.
+ * @author Tony & Troy
  *
  */
 public class thePriceIsRightGUI extends Application{
 	
 	//GameFunctionality engine = new GameFunctionality();
-	
+	/**
+	 * Serves to launch the game
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	int numCards = 5;
 	int Score = 0;
-	
+	/*
+	 * Defines all the static variables accessed thought the program
+	 */
 	String cardsInHandRandom = new String();
 	ArrayList<String> shapesInHand = new ArrayList<String>();
 	ArrayList<String> colorsInHand = new ArrayList<String>();
@@ -91,7 +96,10 @@ public class thePriceIsRightGUI extends Application{
 	
 	int flipCounter=0;
 	int roundCounter=0;
-	
+	/**
+	 *Start is used to create the new game scene and lay out the root, takes in all the users input for the main game functionality
+	 *
+	 */
 	@Override
 	public void start(Stage primaryStage) {	// starts the "new game" window. this can be changed if necessary
 		try {
@@ -230,7 +238,10 @@ public class thePriceIsRightGUI extends Application{
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * This provides the main game functionality to dynamically load in random cards and then track how the user guesses
+ * @param stage
+ */
 	public void gameWindow(Stage stage) {	// should probably be moved to it's own file.
 		try {
 			VBox organizer = new VBox();		// I'm not sure how to safely make a file in git, so this is best for now
@@ -435,7 +446,7 @@ public class thePriceIsRightGUI extends Application{
 		whatCards(cardList);	// deleting this line here will ruin EVERYTHING.
 		return cardList;
 	}
-	
+
 	public void whatCards(ArrayList<Shape> hand) {
 		
 		Vector<String> currentCards = new Vector<String>();
@@ -477,7 +488,12 @@ public class thePriceIsRightGUI extends Application{
 			cardsInHandRandom += currentCards.remove(tempIndex);
 		}
 	}
-
+/**
+ * Game over loads the scene to ask the user if they would like to play again and display their score.
+ * If the user says quit the application is exited.
+ * Otherwise the user is taken back to the first window and is shown options to play agian.
+ * @param stage
+ */
 	public void gameOver(Stage stage) {
 		
 		VBox organizer = new VBox(10);
@@ -542,7 +558,10 @@ public class thePriceIsRightGUI extends Application{
 		
 		
 	}
-	
+/**
+ * Provides the animations to flip a face down card over. This is given a stack pane, which represents a card.
+ * @param fullCard
+ */
 	void FlipCardOver(StackPane fullCard){
 		Property translateXProperty = fullCard.translateXProperty();
 		Property translateScalProperty = fullCard.scaleXProperty();
@@ -577,6 +596,10 @@ public class thePriceIsRightGUI extends Application{
 		timeline.getKeyFrames().add( keyFrame1000 );
 		timeline.play();
 	}
+	/**
+	 * Provides the animations to flip a face up card down. This is given a stack pane, which represents a card.
+	 * @param fullCard
+	 */
 	void FlipCardBack(StackPane fullCard){
 		Property translateXProperty = fullCard.translateXProperty();
 		Property translateScalProperty = fullCard.scaleXProperty();
