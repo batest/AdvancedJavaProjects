@@ -305,8 +305,8 @@ public class thePriceIsRightGUI extends Application{
 				public void handle(ActionEvent event) {
 				
 					if (flipCounter < numCards){
-						FlipCard(cards.get(flipCounter));
-//						/cardBacks.get(flipCounter).setVisible(false);	// needs changed to cutesy animation				
+						FlipCardOver(cards.get(flipCounter));
+//						cardBacks.get(flipCounter).setVisible(false);	// needs changed to cutesy animation				
 		
 		//Calculates Score
 						
@@ -348,23 +348,20 @@ public class thePriceIsRightGUI extends Application{
 						cardsInHandRandom = "";
 
 						cardShape=newHand();
-
 			//Rebuilds Hand
 						cardArea.getChildren().clear();
 						cards.clear();
 						
-						for( int cardCount =0; cardCount < numCards; cardCount++){
+						for( int cardCount =0; cardCount < numCards; cardCount++){							
 							cards.add(new StackPane());			
 							cards.get(cardCount).getChildren().add(cardFront.get(cardCount));
 							cards.get(cardCount).getChildren().add(cardShape.get(cardCount));
 							cards.get(cardCount).getChildren().add(cardBacks.get(cardCount));
-							
+							FlipCardBack(cards.get(cardCount));
+							cardBacks.get(cardCount).setOpacity(1.0);
 						}
+						
 						cardArea.getChildren().addAll(cards);
-				
-						for(int tempCount=0; tempCount < numCards; tempCount++){
-							cardBacks.get(tempCount).setVisible(true);
-						}
 						
 						currentShapes.setText("Cards Dealt:\n" + cardsInHandRandom);
 						
@@ -546,7 +543,7 @@ public class thePriceIsRightGUI extends Application{
 		
 	}
 	
-	void FlipCard(StackPane fullCard){
+	void FlipCardOver(StackPane fullCard){
 		Property translateXProperty = fullCard.translateXProperty();
 		Property translateScalProperty = fullCard.scaleXProperty();
 		Property transperencyProperty =fullCard.getChildren().get(2).opacityProperty();
@@ -578,6 +575,45 @@ public class thePriceIsRightGUI extends Application{
 		timeline.getKeyFrames().add( keyFrame500 );
 		timeline.getKeyFrames().add(keyFrame501);
 		timeline.getKeyFrames().add( keyFrame1000 );
+		timeline.play();
+	}
+	void FlipCardBack(StackPane fullCard){
+		Property translateXProperty = fullCard.translateXProperty();
+		Property translateScalProperty = fullCard.scaleXProperty();
+		Property transperencyProperty =fullCard.getChildren().get(2).opacityProperty();
+		Property transperencyShapeProperty =fullCard.getChildren().get(1).opacityProperty();
+	            new FadeTransition(Duration.millis(1),fullCard.getChildren().get(1) );
+		KeyFrame keyFrame0 = new KeyFrame(
+				Duration.ZERO,
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( translateScalProperty ,1.0 ),
+				new KeyValue( transperencyShapeProperty, 0.0),
+				new KeyValue( transperencyProperty, 0.0));
+		KeyFrame keyFrame100 = new KeyFrame(
+				new Duration( 100 ),
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( translateScalProperty ,0.0 ),
+				new KeyValue( transperencyShapeProperty, 0.0),
+				new KeyValue( transperencyProperty, 0.0));
+		KeyFrame keyFrame101 = new KeyFrame(
+				new Duration( 101 ),
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( translateScalProperty ,0.0 ),
+				new KeyValue( transperencyShapeProperty, 1.0),
+				new KeyValue( transperencyProperty, 1.0));
+		KeyFrame keyFrame200 = new KeyFrame(
+				new Duration( 200 ),
+				new KeyValue( translateXProperty,0.0 ),
+				new KeyValue( transperencyShapeProperty, 1.0),
+				new KeyValue( translateScalProperty ,1.0 ),
+				new KeyValue( transperencyProperty, 1.0));
+		
+		
+		Timeline timeline = new Timeline();
+		timeline.getKeyFrames().add( keyFrame0 );
+		timeline.getKeyFrames().add( keyFrame100 );
+		timeline.getKeyFrames().add(keyFrame101);
+		timeline.getKeyFrames().add( keyFrame200 );
 		timeline.play();
 	}
 	
