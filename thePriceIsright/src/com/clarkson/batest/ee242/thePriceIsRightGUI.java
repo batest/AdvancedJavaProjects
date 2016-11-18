@@ -339,20 +339,21 @@ public class thePriceIsRightGUI extends Application{
 						
 						flipCounter++;
 		//End of round/Game
-						if (flipCounter==numCards){
+					if (flipCounter==numCards){
 							flipNext.setText("Next Round!!");
 							roundCounter = roundCounter +1;
-							if(roundCounter == 3) {
-								gameOver(stage);
-							}
 						}
+					
 					}
 
 					else{		//RESETS FOR NEXT ROUND		
 						flipCounter=0;
-
+						if(roundCounter == 3) {
+							gameOver(stage);
+						}
+						else {
 						flipNext.setText("Flip Next Card!");
-							
+						flipNext.setDisable(true);
 						cardShape.clear();
 						colorsInHand.clear();
 						shapesInHand.clear();
@@ -373,9 +374,11 @@ public class thePriceIsRightGUI extends Application{
 						}
 						
 						cardArea.getChildren().addAll(cards);
-						
 						currentShapes.setText("Cards Dealt:\n" + cardsInHandRandom);
 						
+						flipNext.setDisable(false);
+						}
+
 					}
 				}
 			});
